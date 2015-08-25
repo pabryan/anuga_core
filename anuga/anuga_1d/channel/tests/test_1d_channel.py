@@ -1,18 +1,14 @@
-#!/usr/bin/env python
+import unittest
 
-import unittest, os, time
-import os.path
 from math import pi, sqrt, pow
+
 import tempfile
 import numpy
 from pprint import pprint
 
-from anuga.anuga_1d.channel.channel_domain import *
 from anuga.anuga_1d.config import g, epsilon
 from anuga.anuga_1d.base.generic_mesh import uniform_mesh
 from anuga.anuga_1d.channel.channel_domain import Domain
-
-from anuga.utilities.system_tools import get_pathname_from_package
 
 # Get gateway to C implementation of flux function for direct testing
 from anuga.anuga_1d.channel.channel_domain_ext import compute_fluxes_channel_ext as flux_function
@@ -42,37 +38,14 @@ class Test_1d_Channel(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def test_channel_domain(self):
-        # Set final time and yield time for simulation
-        finaltime = 50.0
-        yieldstep = 10.0
-
-        # Length of channel (m)
-        L = 1000.0   
-        # Define the number of cells
+    def test_init(self):
         N = 200
-
-        # Create domain with centroid points as defined above
         domain = Domain(*uniform_mesh(N))
 
-        # Set initial values of quantities - default to zero
-        domain.set_quantity('area', initial_area)
-        domain.set_quantity('width',width)
-        domain.set_quantity('elevation',bed)
-        domain.set_quantity('discharge',initial_discharge)
+        domain.check_integrity()
 
-        # Set boundry type, order, timestepping method and limiter
-        Bd = Dirichlet_boundary([14,20,0,1.4,20/14,9,1.4])
-        domain.set_boundary({'left': Bd , 'right' : Bd })
-
-        domain.order = 2
-        domain.set_timestepping_method('rk2')
-        domain.set_CFL(1.0)
-        domain.set_limiter("vanleer")
-
-        for t in domain.evolve(yieldstep = yieldstep, finaltime = finaltime):
-            domain.write_time()
-
+        keys = ['area', 'discharge', 'elevation', 'height', 'velocity','width','stage','friction']
+        self.assertEqual(set(keys), set(domain.quantities.keys()))
 
 if __name__ == "__main__":
     suite = unittest.makeSuite(Test_1d_Channel, 'test_')
