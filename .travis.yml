@@ -11,6 +11,10 @@ env:
     - PYTHON_VERSION="2.7"  ANUGA_PARALLEL="false"   DISTRIB="ubuntu"
     #- PYTHON_VERSION="2.6"  ANUGA_PARALLEL="false"   DISTRIB="conda"
 
+branches:
+    only:
+      - anuga-1d
+
 install: 
     - if [[ "$DISTRIB" == "conda" ]]; then source tools/install_conda.sh; fi
     - if [[ "$DISTRIB" == "ubuntu" ]]; then source tools/install_ubuntu.sh; fi
