@@ -12,6 +12,8 @@ def configuration(parent_package='',top_path=None):
     
     config = Configuration('base', parent_package, top_path)
 
+    config.add_data_dir('tests')
+
     util_dir = join('..','utilities')
             
     config.add_extension('quantity_ext',
