@@ -26,8 +26,12 @@ class Test_1d_Channel(unittest.TestCase):
 
         domain.check_integrity()
 
-        keys = ['area', 'discharge', 'elevation', 'height', 'velocity','width','stage','friction']
-        self.assertEqual(set(keys), set(domain.quantities.keys()))
+        expectedkeys = ['area', 'discharge', 'elevation', 'height', 'velocity','width','stage','friction']
+        expected_conserved_quantities = [0, 0]
+
+        self.assertItemsEqual(expectedkeys, domain.quantities.keys())
+
+        self.assertItemsEqual(domain.get_conserved_quantities(0), expected_conserved_quantities)
 
 if __name__ == "__main__":
     suite = unittest.makeSuite(Test_1d_Channel, 'test_')
