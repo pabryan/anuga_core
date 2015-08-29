@@ -14,8 +14,7 @@ def uniform_mesh(n, x_0=0.0, x_1=1.0):
     ranging from x_0 to x_1
     """
 
-    assert n>0
-
+    if not n>0: raise ValueError("Expected n>0")
 
     points  = x_0 + (x_1 - x_0)*numpy.arange(n+1,dtype=numpy.float)/n
     boundary = {(0, 0): 'left', (n-1, 1): 'right'}
