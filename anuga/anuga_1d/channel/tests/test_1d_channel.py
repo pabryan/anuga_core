@@ -13,24 +13,6 @@ from anuga.anuga_1d.channel.channel_domain import Domain
 # Get gateway to C implementation of flux function for direct testing
 from anuga.anuga_1d.channel.channel_domain_ext import compute_fluxes_channel_ext as flux_function
 
-# Define functions for initial quantities
-def initial_area(x):
-    return 1.4691*width(x)
-
-def width(x):
-    x1=(x/1000)*(x/1000)
-    x2=x1*(x/1000)
-    x3=x2*(x/1000)
-    return 10-64*(x1-2*x2+x3)
-
-def bed(x):
-    y = numpy.ones(len(x),numpy.float)
-
-    return numpy.where( (x<525) & (x>475),y,0.0)
-    
-def initial_discharge(x):
-    return 20
-
 class Test_1d_Channel(unittest.TestCase):
     def setUp(self):
         pass
@@ -39,7 +21,7 @@ class Test_1d_Channel(unittest.TestCase):
         pass
 
     def test_init(self):
-        N = 200
+        N = 10
         domain = Domain(*uniform_mesh(N))
 
         domain.check_integrity()
